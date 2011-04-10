@@ -12,6 +12,14 @@ fun s:RemoveSnippet()
 		if exists('s:oldVars') | unl s:oldVars s:oldEndCol | endif
 	endif
 	aug! snipMateAutocmds
+
+    let linecount = len(getline("1", "$"))
+    for linenum in range(1, linecount)
+        let line = getline(linenum)
+        let line = substitute(line, '\v\%uc\(([^)]+)\)', '\U\1\E', 'g')
+        let line = substitute(line, '\v\%ucfirst\(([^)]+)\)', '\u\1', 'g')
+        call setline(linenum, line)
+    endfor
 endf
 
 fun snipMate#expandSnip(snip, col)
